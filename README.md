@@ -8,9 +8,7 @@ This project will create a OpenStack Swift All-In-One Docker image
 
 ## To build the image ##
 ```
-docker build \
--f SAIO/Docker/Dockerfile \
--t saio .
+docker build -t saio .
 ```
 
 Build arguments can be used to change the installed release for the following components:
@@ -23,8 +21,7 @@ Build arguments can be used to change the installed release for the following co
 
 and can be built using the following syntax:
  ```
- docker build \
- -f SAIO/Docker/Dockerfile \
+ docker build
  --build-arg liberasurecode_release=1.4.0 \
  --build-arg swiftclient_release=3.3.0 \
  --build-arg swift_release=2.13.0 \
