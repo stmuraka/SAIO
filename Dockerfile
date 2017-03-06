@@ -143,9 +143,7 @@ COPY start.sh /home/${SWIFT_USER}
 
 # Fix ownership
 RUN sudo chown ${SWIFT_USER}.${SWIFT_USER} /etc/swift/proxy-server.conf \
- && sudo chown ${SWIFT_USER}.${SWIFT_USER} /home/${SWIFT_USER}/start.sh \
- && sudo chown ${SWIFT_USER}.${SWIFT_USER} /home/${SWIFT_USER}/swift/swift/common/middleware/webhook.py \
- && sudo chown ${SWIFT_USER}.${SWIFT_USER} /home/${SWIFT_USER}/swift/.webhooktests
+ && sudo chown ${SWIFT_USER}.${SWIFT_USER} /home/${SWIFT_USER}/start.sh
 
 # Expose Swift proxy port
 EXPOSE 8080
