@@ -55,7 +55,7 @@ VOLUME /srv
 
 # Common Post-Device Setup
 RUN mv /etc/rc.local /etc/rc.local.orig
-COPY SAIO/Docker/rc.local /etc/rc.local
+COPY rc.local /etc/rc.local
 
 ### Get the python-swiftclient code ###
 USER ${SWIFT_USER}
