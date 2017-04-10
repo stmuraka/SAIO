@@ -28,9 +28,10 @@ RUN apt-get update --fix-missing \
 
 # Build and install liberasurecode
 ARG liberasurecode_release=1.4.0
-WORKDIR /tmp
+WORKDIR /opt
 RUN git clone https://github.com/openstack/liberasurecode.git
-WORKDIR /tmp/liberasurecode
+ENV LIBERASURECODE_DIR="/opt/liberasurecode"
+WORKDIR ${LIBERASURECODE_DIR}
 RUN git checkout ${liberasurecode_release} \
  && ./autogen.sh \
  && ./configure \
@@ -134,6 +135,9 @@ ENV SWIFT_TEST_CONFIG_FILE="/etc/swift/test.conf" \
     PATH="/home/${SWIFT_USER}/bin:${PATH}"
 RUN echo "export PATH=${HOME}/bin:${PATH}" >> ${HOME}/.bashrc \
  && . ${HOME}/.bashrc
+# Copy swift test script
+COPY runTests.sh /home/${SWIFT_USER}
+
 
 # Specify loopback device
 ENV SAIO_BLOCK_DEVICE="/srv/swift-disk"
@@ -141,9 +145,12 @@ ENV SAIO_BLOCK_DEVICE="/srv/swift-disk"
 # Copy start script
 COPY start.sh /home/${SWIFT_USER}
 
+# Copy liberasurecode check script
+COPY liberasurecodeCheck.sh /home/${SWIFT_USER}
+
 # Fix ownership
 RUN sudo chown ${SWIFT_USER}.${SWIFT_USER} /etc/swift/proxy-server.conf \
- && sudo chown ${SWIFT_USER}.${SWIFT_USER} /home/${SWIFT_USER}/start.sh
+ && sudo chown ${SWIFT_USER}.${SWIFT_USER} /home/${SWIFT_USER}/*.sh
 
 # Expose Swift proxy port
 EXPOSE 8080
