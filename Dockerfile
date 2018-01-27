@@ -83,7 +83,7 @@ RUN cd ${HOME}/swift \
  && sudo python setup.py develop \
  && cd -
 
-# 5. Install swift’s test dependencies:
+# 5. Install swift's test dependencies:
 RUN cd ${HOME}/swift \
  && sudo -H pip install -r test-requirements.txt
 
@@ -108,7 +108,8 @@ RUN sudo rm -rf /etc/swift \
  && cd - \
  && sudo chown -R ${SWIFT_USER}:${SWIFT_USER} /etc/swift \
  && find /etc/swift/ -name \*.conf | xargs sudo sed -i "s/<your-user-name>/${SWIFT_USER}/" \
- && grep changeme /etc/swift/*.conf | cut -d ':' -f1 | uniq | xargs sudo sed -i "s/changeme/$(openssl rand -hex 16)/"
+ && grep changeme /etc/swift/*.conf | cut -d ':' -f1 | uniq | xargs sudo sed -i "s/changeme/$(openssl rand -hex 16)/" \
+ && sed -i -e 's/^bind_ip =.*$/bind_ip = 0.0.0.0/' /etc/swift/proxy-server.conf
 
 ###  Setting up scripts for running Swift ###
 RUN mkdir -p ${HOME}/bin \
